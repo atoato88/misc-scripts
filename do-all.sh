@@ -49,11 +49,11 @@ ssh-command-all(){
 case ${1}
 in
 	ping )
-		ping-all;;
+		ping-all ;;
 	shutdown )
-		shutdown-all;;
+		shutdown-all ;;
 	start )
-		start-all;;
+		start-all ;;
 	ssh )
 		ssh-command-all ${@:2} ;;
 
