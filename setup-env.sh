@@ -7,11 +7,11 @@ then
 	set -x
 fi
 
-## Create tmux env
+## Setup tmux env
 setup-tmux() {
 	mkdir -p ~/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-	cp -a ./conf/.tmux.conf ~/
+	cp -a ./config/.tmux.conf ~/
 	~/.tmux/plugins/tpm/bin/install_plugins
 }
 
@@ -20,6 +20,20 @@ delete-tmux() {
 	rm -rf ~/.tmux/plugins
 }
 
+## Setup vim env
+setup-vim() {
+	sudo apt install -y vim-gnome-py2
+	sudo update-alternatives --set vim /usr/bin/vim.gnome-py2
+	curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh > /tmp/install.sh
+	. /tmp/install.sh && rm /tmp/install.sh
+	cp -a ./config/.vimrc ~/
+	vim +NeoBundleInstall +qall
+}
+
+## Delete vim env
+delete-vim() {
+	rm -rf ~/.vim/bundle
+}
 
 SELECT=${1:-all}
 DEL_TARGET=${2:-all}
@@ -28,6 +42,8 @@ case ${SELECT}
 in
 	tmux )
 		setup-tmux;;
+	vim )
+		setup-vim;;
 	all )
 		echo setup all env;;
 	delete )
@@ -35,6 +51,8 @@ in
 		in
 			tmux )
 				delete-tmux;;
+			vim )
+				delete-vim;;
 			all )
 				echo delete all env;;
 		esac
