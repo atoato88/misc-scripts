@@ -8,7 +8,7 @@ then
 fi
 
 ## Create tmux env
-create-tmux() {
+setup-tmux() {
 	mkdir -p ~/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
@@ -42,9 +42,9 @@ DEL_TARGET=${2:-all}
 case ${SELECT}
 in
 	tmux )
-		create-tmux;;
+		setup-tmux;;
 	all )
-		echo create all env;;
+		echo setup all env;;
 	delete )
 		case ${DEL_TARGET}
 		in
