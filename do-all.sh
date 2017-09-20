@@ -46,6 +46,16 @@ ssh-command-all(){
 	done
 }
 
+ssh-key-setting-all(){
+	for h in ${HOSTS}
+	do
+		echo ${h}
+		ssh-keygen -R ${h}
+    ssh-keyscan -t rsa ${h} >> ~/.ssh/known_hosts
+	done
+  
+}
+
 case ${1}
 in
 	ping )
@@ -56,6 +66,8 @@ in
 		start-all ;;
 	ssh )
 		ssh-command-all ${@:2} ;;
+	ssh-key )
+		ssh-key-setting-all ;;
 
 esac
 
