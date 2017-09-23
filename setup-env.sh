@@ -35,6 +35,23 @@ delete-vim() {
 	rm -rf ~/.vim/bundle
 }
 
+## Setup bashrc env
+setup-bashrc() {
+	cat ./config/.bashrc-append >> ~/.bashrc
+}
+
+## Delete bashrc env
+delete-bashrc() {
+  cat ./config/.bashrc-append | awk '{gsub("\\\\n", "\\\\\\\\n"); print $0}' |
+  while read li
+  do
+    if [[ -n "${li}" ]]
+    then
+      sed -i "/${li}/d" ~/.bashrc
+    fi
+  done
+}
+
 SELECT=${1:-all}
 DEL_TARGET=${2:-all}
 
@@ -44,6 +61,8 @@ in
 		setup-tmux;;
 	vim )
 		setup-vim;;
+	bashrc )
+		setup-bashrc;;
 	all )
 		echo setup all env;;
 	delete )
@@ -53,6 +72,8 @@ in
 				delete-tmux;;
 			vim )
 				delete-vim;;
+			bashrc )
+				delete-bashrc;;
 			all )
 				echo delete all env;;
 		esac
