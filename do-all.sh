@@ -1,7 +1,7 @@
 #!/bin/bash
 
-HOSTS="192.168.210.111 192.168.210.112 192.168.210.113 192.168.210.114 192.168.210.116 192.168.210.117 192.168.210.118 192.168.210.121 192.168.210.122 192.168.210.123 192.168.210.124"
-VIRSH_DOMS="ubuntu-master01 ubuntu-master02 ubuntu-master03 ubuntu-master04 ubuntu-etcd01 ubuntu-etcd02 ubuntu-etcd03 ubuntu-worker01 ubuntu-worker02 ubuntu-worker03 ubuntu-worker04"
+HOSTS="172.18.210.111 172.18.210.112 172.18.210.113 172.18.210.116 172.18.210.117 172.18.210.118 172.18.210.121 172.18.210.122 172.18.210.123"
+VIRSH_DOMS="ubuntu-master01 ubuntu-master02 ubuntu-master03 ubuntu-etcd01 ubuntu-etcd02 ubuntu-etcd03 ubuntu-worker01 ubuntu-worker02 ubuntu-worker03"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -56,6 +56,14 @@ ssh-key-setting-all(){
   
 }
 
+scp-command-all(){
+	for h in ${HOSTS}
+	do
+		echo ${h}
+    echo scp $@ | sed -e "s/{}/${h}/g" | xargs -I {} bash -c "{}"
+	done
+}
+
 case ${1}
 in
 	ping )
@@ -68,6 +76,8 @@ in
 		ssh-command-all ${@:2} ;;
 	ssh-key )
 		ssh-key-setting-all ;;
+	scp )
+		scp-command-all ${@:2} ;;
 
 esac
 
