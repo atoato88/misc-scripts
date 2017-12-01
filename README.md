@@ -1,5 +1,6 @@
 # misc-scripts
 
+```bash
 cd ~
 git clone <URL for this repo> scripts
 cd scripts
@@ -7,4 +8,4 @@ cd scripts
 
 # for delete
 ./setup-env.sh delete tmux
-
+```
