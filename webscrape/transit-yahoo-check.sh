@@ -7,9 +7,12 @@
 
 
 set -eu
-set -x
+#set -x
 
-URL="https://transit.yahoo.co.jp"
+FROM="%E6%96%B0%E6%9C%A8%E5%A0%B4"
+TO="%E5%B8%82%E5%B7%9D"
+
+URL="https://transit.yahoo.co.jp/search/result?from=${FROM}&to=${TO}&s=1&ticket=ic"
 
 function is_http_error() {
   local error_code_array=(404 )
@@ -18,21 +21,25 @@ function is_http_error() {
 
   if `echo ${success_code_array[@]} | grep -q "${code}"`
   then
-    echo 0
+    #echo 0
     return 0
   else
-    echo 1
+    #echo 1
     return 1
   fi
 }
 
 
 # Check url response code.
-RESPONSE=$(curl --write-out %{http_code} --silent --output /dev/null ${URL})
-echo ${RESPONSE}
+RESPONSE_CODE=$(curl -L --write-out %{http_code} --silent --output /dev/null ${URL})
+#echo ${RESPONSE_CODE}
 
-echo $(is_http_error ${RESPONSE})
+is_http_error ${RESPONSE_CODE}
 
 # Check target xpath. 
+XPATH_EXP='//*[@id="route01"]'
+RESPONSE=$(curl -L --silent ${URL} | xmllint --html --xpath "${XPATH_EXP}" - 2>/dev/null)
+echo ${RESPONSE}
+
 
 exit 0
