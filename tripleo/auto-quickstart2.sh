@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# see http://superuser.openstack.org/articles/new-tripleo-quick-start-cheatsheet/
+
 set -x
 
 cd ${HOME}
