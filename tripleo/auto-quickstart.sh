@@ -2,7 +2,7 @@
 
 function print_separation() {
   DESC=${1:-""}
-  echo '#################################### auto-run-script:' ${DESC}
+  echo '####' $(date) '################################ auto-run-script:' ${DESC}
 }
 
 #set -eu
@@ -28,7 +28,9 @@ fi
 PARAM_EXTRA="--extra-vars deploy_timeout=120"
 
 
-print_separation "clean env" cd ${HOME} bash quickstart.sh --teardown all 127.0.0.2
+print_separation "clean env"
+cd ${HOME}
+bash quickstart.sh --teardown all 127.0.0.2
 rm -rf ~/.quickstart
 
 
@@ -62,7 +64,7 @@ undercloud_generate_service_certificate: false
 
 # This enables the deployment of the overcloud with SSL.
 ssl_overcloud: false
-' >> config/nodes/3ctlr_3comp.yml 
+' >> ${NODE}
 
 print_separation "install undercloud"
 bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-undercloud.yml 127.0.0.2
