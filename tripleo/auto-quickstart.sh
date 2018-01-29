@@ -30,13 +30,13 @@ PARAM_EXTRA="--extra-vars deploy_timeout=120"
 
 print_separation "clean env"
 cd ${HOME}
-bash quickstart.sh --teardown all 127.0.0.2
+#bash quickstart.sh --teardown all 127.0.0.2
 rm -rf ~/.quickstart
 
 
 print_separation "init undercloud vm"
 bash quickstart.sh --install-deps
-bash quickstart.sh -R master --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml 127.0.0.2
+bash quickstart.sh -R master --teardown all --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml 127.0.0.2
 if [[ $? -gt 0 ]]
 then
   echo NG retry
