@@ -30,53 +30,54 @@ if [[ -n ${NODE} ]]
 then
   PARAM_NODE="--nodes ${NODE}" 
 fi
-PARAM_EXTRA="--extra-vars deploy_timeout=120"
+#PARAM_EXTRA="--extra-vars deploy_timeout=120"
+PARAM_EXTRA="--extra-vars deploy_timeout=300"
 
 VIRTHOST=127.0.0.2
 CONFIG=~/deploy-config.yaml
 
 cat > $CONFIG << EOF
-control_memory: 6144
-compute_memory: 6144
+control_memory: 5120
+compute_memory: 5120
 
 undercloud_memory: 8192
 
-undercloud_vcpu: 4
+undercloud_vcpu: 3
 
-default_vcpu: 1                                                                                                    
+default_vcpu: 1
 
-node_count: 4                                                                                                      
+node_count: 4
   
-overcloud_nodes:                                                                                                   
+overcloud_nodes:
   - name: control_0
-    flavor: control                                                                                                
-    virtualbmc_port: 6230                                                                                          
-
-  - name: control_1                                                                                                
     flavor: control
-    virtualbmc_port: 6231                                                                                          
-                                                                                                                   
-  - name: control_2                                                                                                
+    virtualbmc_port: 6230
+
+  - name: control_1
+    flavor: control
+    virtualbmc_port: 6231
+    
+  - name: control_2
     flavor: control
     virtualbmc_port: 6232
 
-  - name: compute_0                                                                                                
-    flavor: compute                                                                                                
-    virtualbmc_port: 6233                                                                                          
+  - name: compute_0
+    flavor: compute
+    virtualbmc_port: 6233
   
 topology: >-
   --compute-scale 1
   --control-scale 3
-                                                                                                                   
-containerized_overcloud: true                                                                                      
+  
+containerized_overcloud: true
 delete_docker_cache: true
 enable_pacemaker: true
 run_tempest: false
 extra_args: >-
   --libvirt-type qemu
-  --ntp-server pool.ntp.org                                                                                        
+  --ntp-server pool.ntp.org
   -e /usr/share/openstack-tripleo-heat-templates/environments/docker.yaml
-  -e /usr/share/openstack-tripleo-heat-templates/environments/docker-ha.yaml                                       
+  -e /usr/share/openstack-tripleo-heat-templates/environments/docker-ha.yaml
 EOF
 
 
