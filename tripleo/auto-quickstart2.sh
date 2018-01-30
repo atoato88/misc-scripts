@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# see http://superuser.openstack.org/articles/new-tripleo-quick-start-cheatsheet/
-
 set -x
 
 cd ${HOME}
@@ -72,4 +70,15 @@ bash ./quickstart.sh \
       -e @$CONFIG      \
       $VIRTHOST
 
+if [[ $? -gt 0 ]]
+then
+  echo NG retry
+  bash ./quickstart.sh \
+        --clean          \
+        --release master \
+        --teardown none   \
+        --tags all       \
+        -e @$CONFIG      \
+        $VIRTHOST
+fi
 
