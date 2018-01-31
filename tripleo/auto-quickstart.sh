@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# ref:
+# https://docs.openstack.org/tripleo-quickstart/latest/getting-started.html
+# http://superuser.openstack.org/articles/new-tripleo-quick-start-cheatsheet/
+
 function print_separation() {
   DESC=${1:-""}
   echo '####' $(date) '################################ auto-run-script:' ${DESC}
