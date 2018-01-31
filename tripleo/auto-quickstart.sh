@@ -84,21 +84,16 @@ EOF
 cd ${HOME}
 
 print_separation "clean env"
-#bash quickstart.sh --teardown all 127.0.0.2
 rm -rf ~/.quickstart
 
 
 print_separation "init undercloud vm"
 bash quickstart.sh --install-deps
-#bash quickstart.sh -R master --teardown all --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml 127.0.0.2
-#bash quickstart.sh --release master --teardown all --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -e @$CONFIG_YML -p quickstart.yml $VIRTHOST 
 bash quickstart.sh --release master --teardown all --tags all ${PARAM_NODE} ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml $VIRTHOST 
 if [[ $? -gt 0 ]]
 then
   echo NG retry
   sed -i "s/3.10.0-693.el7.x86_64/3.10.0-693.11.6.el7.x86_64/" .quickstart/usr/local/share/ansible/roles/modify-image/defaults/main.yml
-  #bash quickstart.sh -R master --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml 127.0.0.2
-  #bash quickstart.sh --release master --teardown all --tags all ${PARAM_CONFIG0} ${PARAM_EXTRA} -e @$CONFIG_YML -p quickstart.yml $VIRTHOST 
   bash quickstart.sh --release master --teardown all --tags all ${PARAM_NODE} ${PARAM_CONFIG0} ${PARAM_EXTRA} -p quickstart.yml $VIRTHOST 
 fi
 
@@ -106,35 +101,20 @@ fi
 cd .quickstart
 
 print_separation "install undercloud"
-#bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-undercloud.yml 127.0.0.2
-#bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_CONFIG} ${PARAM_EXTRA} -I -e @$CONFIG_YML -p quickstart-extras-undercloud.yml $VIRTHOST 
 bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I -p quickstart-extras-undercloud.yml $VIRTHOST 
 
 print_separation "overcloud prep"
-#ssh -F ~/.quickstart/ssh.config.ansible undercloud -- sudo sed -i '/#stack_action_timeout/a\ stack_action_timeout\ =\ 36000' /etc/heat/heat.conf
-#ssh -F ~/.quickstart/ssh.config.ansible undercloud -- sudo systemctl restart openstack-heat-engine
-#ssh -F ~/.quickstart/ssh.config.ansible undercloud -- "date; sudo grep 36000 /var/log/heat/heat-engine.log"
-#bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-overcloud-prep.yml 127.0.0.2
-#bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_CONFIG} ${PARAM_EXTRA} -I -e @$CONFIG_YML -p quickstart-extras-overcloud-prep.yml $VIRTHOST 
 bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I -p quickstart-extras-overcloud-prep.yml $VIRTHOST 
 if [[ $? -gt 0 ]]
 then
   echo NG retry
-  #bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-overcloud-prep.yml 127.0.0.2
-  #bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_CONFIG} ${PARAM_EXTRA} -I -e @$CONFIG_YML -p quickstart-extras-overcloud-prep.yml $VIRTHOST 
   bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I -p quickstart-extras-overcloud-prep.yml $VIRTHOST 
 fi
 
 print_separation "overcloud install"
-#ssh -F ~/.quickstart/ssh.config.ansible undercloud -- sudo sed -i "/name:\ ControllerApi/a'\ \ disable_upgrade_deployment:\ True'" /usr/share/openstack-tripleo-heat-templates/ci/environments/multinode-3nodes.yaml
-
-#bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-overcloud.yml 127.0.0.2
-#bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_CONFIG} ${PARAM_EXTRA} -I -e @$CONFIG_YML -p quickstart-extras-overcloud.yml $VIRTHOST 
 bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I -p quickstart-extras-overcloud.yml $VIRTHOST 
 
 print_separation "overcloud validation"
-#bash ./tripleo-quickstart/quickstart.sh -R master --no-clone --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I --teardown none -p quickstart-extras-validate.yml 127.0.0.2
-#bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_CONFIG} ${PARAM_EXTRA} -I -e @$CONFIG_YML -p quickstart-extras-validate.yml $VIRTHOST 
 bash ./tripleo-quickstart/quickstart.sh --release master --no-clone --teardown none --tags all ${PARAM_NODE} ${PARAM_CONFIG} ${PARAM_EXTRA} -I -p quickstart-extras-validate.yml $VIRTHOST 
 
 exit 0
