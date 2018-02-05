@@ -19,10 +19,6 @@ NOW=$(get_date)
 STR_JOIN="-"
 PREFIX="get-env"
 WD=${WD:-"/tmp/${PREFIX}${STR_JOIN}${NOW}"}
-PREFIX_UNDER="undercloud"
-PREFIX_OVER="overcloud"
-PREFIX_CONT="controller"
-PREFIX_COMP="compute"
 
 STR_UNDER="undercloud"
 STR_OVER_CONT="overcloud-controller"
@@ -37,9 +33,13 @@ STR_OVER_COMP0="overcloud-novacompute-0"
 COM_SSH="ssh -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SCP="scp -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SYSTEMD_SERVICE="sudo systemctl list-unit-files --full"
+COM_SS="sudo ss -napl"
 COM_PS="sudo ps -ef"
 COM_DOCKER_PS="sudo docker ps --all"
+COM_DOCKER_PSTREE="sudo pstree -lap"
 COM_DOCKER_IMAGE="sudo docker images"
+COM_DOCKER_CONTAINER_ID='$(sudo docker ps --format {{.ID}} | xargs)'
+COM_DOCKER_INSPECT='sudo docker inspect ${c} > ${c}.json'
 COM_PCS_STATUS="sudo pcs status"
 COM_PCS_CONFIG="sudo pcs config"
 COM_PCS_CLUSTER_CIB="sudo pcs cluster cib"
@@ -63,10 +63,6 @@ cat <<EOF > "${WD}/export.sh"
 STR_JOIN="${STR_JOIN}"
 PREFIX="${PREFIX}"
 WD="${WD}"
-PREFIX_UNDER="${PREFIX_UNDER}"
-PREFIX_OVER="${PREFIX_OVER}"
-PREFIX_CONT="${PREFIX_CONT}"
-PREFIX_COMP="${PREFIX_COMP}"
 
 STR_UNDER="${STR_UNDER}"
 STR_OVER_CONT="${STR_OVER_CONT}"
@@ -76,9 +72,13 @@ STR_OVER_CONT2="${STR_OVER_CONT2}"
 STR_OVER_COMP="${STR_OVER_COMP}"
 
 COM_SYSTEMD_SERVICE="${COM_SYSTEMD_SERVICE}"
+COM_SS="${COM_SS}"
 COM_PS="${COM_PS}"
+COM_DOCKER_PSTREE="${COM_DOCKER_PSTREE}"
 COM_DOCKER_PS="${COM_DOCKER_PS}"
 COM_DOCKER_IMAGE="${COM_DOCKER_IMAGE}"
+COM_DOCKER_CONTAINER_ID="${COM_DOCKER_CONTAINER_ID}"
+COM_DOCKER_INSPECT="${COM_DOCKER_INSPECT}"
 COM_PCS_STATUS="${COM_PCS_STATUS}"
 COM_PCS_CONFIG="${COM_PCS_CONFIG}"
 COM_PCS_CLUSTER_CIB="${COM_PCS_CLUSTER_CIB}"
@@ -102,7 +102,9 @@ mkdir -p ${WD}
 cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
+${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_PS} > $(get_filename "${COM_PS}")
+${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
 
@@ -120,9 +122,18 @@ mkdir -p ${WD}
 cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
+${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_PS} > $(get_filename "${COM_PS}")
 ${COM_DOCKER_PS} > $(get_filename "${COM_DOCKER_PS}")
+${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
 ${COM_DOCKER_IMAGE} > $(get_filename "${COM_DOCKER_IMAGE}")
+mkdir -p containers
+cd containers
+for c in ${COM_DOCKER_CONTAINER_ID}
+do
+  ${COM_DOCKER_INSPECT}
+done
+cd ..
 ${COM_PCS_STATUS} > $(get_filename "${COM_PCS_STATUS}")
 ${COM_PCS_CONFIG} > $(get_filename "${COM_PCS_CONFIG}")
 ${COM_PCS_CLUSTER_CIB} > $(get_filename "${COM_PCS_CLUSTER_CIB}")
@@ -145,8 +156,17 @@ cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
 ${COM_PS} > $(get_filename "${COM_PS}")
+${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_DOCKER_PS} > $(get_filename "${COM_DOCKER_PS}")
+${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
 ${COM_DOCKER_IMAGE} > $(get_filename "${COM_DOCKER_IMAGE}")
+mkdir -p containers
+cd containers
+for c in ${COM_DOCKER_CONTAINER_ID}
+do
+  ${COM_DOCKER_INSPECT}
+done
+cd ..
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
 
