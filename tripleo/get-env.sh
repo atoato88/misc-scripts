@@ -33,6 +33,7 @@ STR_OVER_COMP0="overcloud-novacompute-0"
 COM_SSH="ssh -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SCP="scp -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SYSTEMD_SERVICE="sudo systemctl list-unit-files --full"
+COM_RPM_QA="sudo rpm -qa"
 COM_SS="sudo ss -napl"
 COM_IP_ADDR="sudo ip addr"
 COM_IP_ROUTE="sudo ip route"
@@ -52,6 +53,8 @@ FILE_ETC="/etc"
 FILE_LOG="/var/log"
 FILE_OCF="/usr/lib/ocf"
 FILE_CONFIG_IN_CONTAINER="/var/lib/config-data"
+FILE_UNDER_HOME="/home/stack"
+FILE_UNDER_HOME_EXCLUDE='--exclude "*.qcow2" --exclude "*.initrd" --exclude "*.vmlinuz" --exclude "*.initramfs" --exclude "*.img"'
 COM_TAR="sudo tar czf"
 
 
@@ -75,6 +78,7 @@ STR_OVER_CONT2="${STR_OVER_CONT2}"
 STR_OVER_COMP="${STR_OVER_COMP}"
 
 COM_SYSTEMD_SERVICE="${COM_SYSTEMD_SERVICE}"
+COM_RPM_QA="${COM_RPM_QA}"
 COM_SS="${COM_SS}"
 COM_IP_ADDR="${COM_IP_ADDR}"
 COM_IP_ROUTE="${COM_IP_ROUTE}"
@@ -94,6 +98,8 @@ FILE_ETC="${FILE_ETC}"
 #FILE_LOG="${FILE_LOG}"
 FILE_OCF="${FILE_OCF}"
 FILE_CONFIG_IN_CONTAINER="${FILE_CONFIG_IN_CONTAINER}"
+FILE_UNDER_HOME="${FILE_UNDER_HOME}"
+FILE_UNDER_HOME_EXCLUDE="${FILE_UNDER_HOME_EXCLUDE}"
 COM_TAR="${COM_TAR}"
 
 NOW="${NOW}"
@@ -109,6 +115,7 @@ mkdir -p ${WD}
 cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
+${COM_RPM_QA} > $(get_filename "${COM_RPM_QA}")
 ${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
 ${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
@@ -117,6 +124,7 @@ ${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
 #${COM_TAR} log.tar.gz ${FILE_LOG}
+${COM_TAR} stack-home.tar.gz ${FILE_UNDER_HOME_EXCLUDE} ${FILE_UNDER_HOME}
 
 tar czvf /tmp/${STR_UNDER}.tar.gz .
 sudo rm -rf ${WD} 
@@ -132,6 +140,7 @@ mkdir -p ${WD}
 cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
+${COM_RPM_QA} > $(get_filename "${COM_RPM_QA}")
 ${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
 ${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
@@ -153,7 +162,7 @@ ${COM_PCS_CLUSTER_CIB} > $(get_filename "${COM_PCS_CLUSTER_CIB}")
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
 #${COM_TAR} log.tar.gz ${FILE_LOG}
 ${COM_TAR} usr-lib-ocf.tar.gz ${FILE_OCF}
-${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
+#${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
 
 tar czvf /tmp/${STR_OVER_CONT}.tar.gz .
 sudo rm -rf ${WD} 
@@ -169,6 +178,7 @@ mkdir -p ${WD}
 cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
+${COM_RPM_QA} > $(get_filename "${COM_RPM_QA}")
 ${COM_PS} > $(get_filename "${COM_PS}")
 ${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
 ${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
@@ -186,7 +196,7 @@ cd ..
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
 #${COM_TAR} log.tar.gz ${FILE_LOG}
-${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
+#${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
 
 tar czvf /tmp/${STR_OVER_COMP}.tar.gz .
 sudo rm -rf ${WD} 
