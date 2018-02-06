@@ -34,6 +34,8 @@ COM_SSH="ssh -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SCP="scp -F ${HOME}/.quickstart/ssh.config.ansible"
 COM_SYSTEMD_SERVICE="sudo systemctl list-unit-files --full"
 COM_SS="sudo ss -napl"
+COM_IP_ADDR="sudo ip addr"
+COM_IP_ROUTE="sudo ip route"
 COM_PS="sudo ps -ef"
 COM_DOCKER_PS="sudo docker ps --all"
 COM_DOCKER_PSTREE="sudo pstree -lap"
@@ -49,7 +51,8 @@ COM_PCS_CLUSTER_CIB="sudo pcs cluster cib"
 FILE_ETC="/etc"
 FILE_LOG="/var/log"
 FILE_OCF="/usr/lib/ocf"
-COM_TAR="sudo tar czvf"
+FILE_CONFIG_IN_CONTAINER="/var/lib/config-data"
+COM_TAR="sudo tar czf"
 
 
 mkdir -p ${WD}
@@ -73,6 +76,8 @@ STR_OVER_COMP="${STR_OVER_COMP}"
 
 COM_SYSTEMD_SERVICE="${COM_SYSTEMD_SERVICE}"
 COM_SS="${COM_SS}"
+COM_IP_ADDR="${COM_IP_ADDR}"
+COM_IP_ROUTE="${COM_IP_ROUTE}"
 COM_PS="${COM_PS}"
 COM_DOCKER_PSTREE="${COM_DOCKER_PSTREE}"
 COM_DOCKER_PS="${COM_DOCKER_PS}"
@@ -87,6 +92,8 @@ COM_PCS_CLUSTER_CIB="${COM_PCS_CLUSTER_CIB}"
 # Files for environment settings.
 FILE_ETC="${FILE_ETC}"
 #FILE_LOG="${FILE_LOG}"
+FILE_OCF="${FILE_OCF}"
+FILE_CONFIG_IN_CONTAINER="${FILE_CONFIG_IN_CONTAINER}"
 COM_TAR="${COM_TAR}"
 
 NOW="${NOW}"
@@ -103,10 +110,13 @@ cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
 ${COM_SS} > $(get_filename "${COM_SS}")
+${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
+${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
 ${COM_PS} > $(get_filename "${COM_PS}")
 ${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
+#${COM_TAR} log.tar.gz ${FILE_LOG}
 
 tar czvf /tmp/${STR_UNDER}.tar.gz .
 sudo rm -rf ${WD} 
@@ -123,6 +133,8 @@ cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
 ${COM_SS} > $(get_filename "${COM_SS}")
+${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
+${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
 ${COM_PS} > $(get_filename "${COM_PS}")
 ${COM_DOCKER_PS} > $(get_filename "${COM_DOCKER_PS}")
 ${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
@@ -139,7 +151,9 @@ ${COM_PCS_CONFIG} > $(get_filename "${COM_PCS_CONFIG}")
 ${COM_PCS_CLUSTER_CIB} > $(get_filename "${COM_PCS_CLUSTER_CIB}")
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
+#${COM_TAR} log.tar.gz ${FILE_LOG}
 ${COM_TAR} usr-lib-ocf.tar.gz ${FILE_OCF}
+${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
 
 tar czvf /tmp/${STR_OVER_CONT}.tar.gz .
 sudo rm -rf ${WD} 
@@ -156,6 +170,8 @@ cd ${WD}
 
 ${COM_SYSTEMD_SERVICE} > $(get_filename "${COM_SYSTEMD_SERVICE}")
 ${COM_PS} > $(get_filename "${COM_PS}")
+${COM_IP_ADDR} > $(get_filename "${COM_IP_ADDR}")
+${COM_IP_ROUTE} > $(get_filename "${COM_IP_ROUTE}")
 ${COM_SS} > $(get_filename "${COM_SS}")
 ${COM_DOCKER_PS} > $(get_filename "${COM_DOCKER_PS}")
 ${COM_DOCKER_PSTREE} > $(get_filename "${COM_DOCKER_PSTREE}")
@@ -169,6 +185,8 @@ done
 cd ..
 
 ${COM_TAR} etc.tar.gz ${FILE_ETC}
+#${COM_TAR} log.tar.gz ${FILE_LOG}
+${COM_TAR} config-in-container.tar.gz ${FILE_CONFIG_IN_CONTAINER}
 
 tar czvf /tmp/${STR_OVER_COMP}.tar.gz .
 sudo rm -rf ${WD} 
