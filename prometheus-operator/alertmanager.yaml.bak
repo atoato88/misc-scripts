@@ -1,0 +1,25 @@
+global:
+  resolve_timeout: 5m
+  slack_api_url: 'URL'
+route:
+  receiver: "null"
+  group_by:
+  - job
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 2h
+  routes:
+  - receiver: 'alert-slack'
+    group_wait: 10s
+  - receiver: "null"
+    match:
+      alertname: DeadMansSwitch
+receivers:
+- name: "null"
+- name: "alert-slack"
+  slack_configs:
+  - channel: '#monitoring-notify'
+    title: "{{ range .Alerts }}{{ .Annotations.summary }}\n{{ end }}"
+    text: "{{ . }}\n"
+    send_resolved: true
+
