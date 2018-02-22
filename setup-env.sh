@@ -7,6 +7,16 @@ then
 	set -x
 fi
 
+## Setup mytools
+setup-mytools() {
+	sudo cp -a others/cth.sh /usr/local/bin/cth
+}
+
+## Delete mytools
+delete-mytools() {
+	sudo rm -f /usr/local/bin/cth
+}
+
 ## Setup tmux env
 setup-tmux() {
 	mkdir -p ~/.tmux/plugins
@@ -57,6 +67,8 @@ DEL_TARGET=${2:-all}
 
 case ${SELECT}
 in
+	mytools )
+		setup-mytools;;
 	tmux )
 		setup-tmux;;
 	vim )
@@ -68,6 +80,8 @@ in
 	delete )
 		case ${DEL_TARGET}
 		in
+			mytools )
+				delete-mytools;;
 			tmux )
 				delete-tmux;;
 			vim )
