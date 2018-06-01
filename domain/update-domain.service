@@ -1,0 +1,6 @@
+[Unit]
+Description=Update dns record
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/update-domain.sh

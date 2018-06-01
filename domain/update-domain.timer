@@ -1,0 +1,9 @@
+[Unit]
+Description=Update domain every 2 minutes
+
+[Timer]
+OnCalendar=*-*-* *:0/2:00
+Unit=update-domain.service
+
+[Install]
+WantedBy=basic.target
