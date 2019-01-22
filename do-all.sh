@@ -1,7 +1,7 @@
 #!/bin/bash
 
-HOSTS="172.18.210.111 172.18.210.112 172.18.210.113 172.18.210.116 172.18.210.117 172.18.210.118 172.18.210.121 172.18.210.122 172.18.210.123"
-VIRSH_DOMS="ubuntu-master01 ubuntu-master02 ubuntu-master03 ubuntu-etcd01 ubuntu-etcd02 ubuntu-etcd03 ubuntu-worker01 ubuntu-worker02 ubuntu-worker03"
+HOSTS="172.18.211.181 172.18.211.182 172.18.211.183 172.18.211.197 172.18.211.198 172.18.211.199"
+VIRSH_DOMS="ubuntu-general01 ubuntu-general02 ubuntu-general03 ubuntu-master01 ubuntu-master02 ubuntu-master03" 
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -60,7 +60,7 @@ scp-command-all(){
 	for h in ${HOSTS}
 	do
 		echo ${h}
-    echo scp $@ | sed -e "s/{}/${h}/g" | xargs -I {} bash -c "{}"
+    scp ${1} ubuntu@${h}:${2}
 	done
 }
 
