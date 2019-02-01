@@ -1,0 +1,10 @@
+#./do-all.sh ssh "cd ~/simple-keepalived && git pull"
+./do-all.sh ssh "cd ~/simple-nginx-proxy && git pull"
+#./do-all.sh ssh "cd ~/simple-coredns && git pull"
+#./do-all.sh ssh "cd ~/simple-keepalived && sudo docker-compose down"
+#./do-all.sh ssh "cd ~/simple-keepalived && sudo docker-compose up -d"
+./do-all.sh ssh "cd ~/simple-nginx-proxy && sudo docker-compose down"
+./do-all.sh ssh "cd ~/simple-nginx-proxy && sudo docker-compose up -d"
+#./do-all.sh ssh "cd ~/simple-coredns && sudo docker-compose down"
+#./do-all.sh ssh "cd ~/simple-coredns && sudo docker-compose up -d"
+./do-all.sh ssh sudo docker ps
