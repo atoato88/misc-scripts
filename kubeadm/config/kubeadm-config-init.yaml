@@ -1,0 +1,23 @@
+kind: InitConfiguration
+nodeRegistration:
+  kubeletExtraArgs:
+    allow-privileged: "true"
+    feature-gates: "VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true"
+---
+kind: ClusterConfiguration
+apiVersion: kubeadm.k8s.io/v1beta1
+kubernetesVersion: stable
+apiServer:
+  certSANs:
+  - "172.18.211.185"
+  extraArgs:
+    allow-privileged: "true"
+    feature-gates: "VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true"
+controlPlaneEndpoint: "172.18.211.185:6444"
+networking:
+  podSubnet: "10.244.0.0/16"
+controllerManager:
+  extraArgs:
+    cluster-cidr: "10.244.0.0/16"
+    node-cidr-mask-size: "24"
+    allocate-node-cidrs: "true"

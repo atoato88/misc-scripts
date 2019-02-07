@@ -1,0 +1,17 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: JoinConfiguration
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: "172.18.211.185:6444"
+    token: "zq6ns1.yk3as6guliw8hn1d"
+    caCertHashes:
+    - "sha256:347933e076c7efffea7e42455c2fe8ed664ee681f38148aae0725ecedb525b24"
+nodeRegistration:
+  kubeletExtraArgs:
+    allow-privileged: "true"
+    feature-gates: "VolumeSnapshotDataSource=true,KubeletPluginsWatcher=true,CSINodeInfo=true,CSIDriverRegistry=true"
+controlPlane:
+  localAPIEndpoint:
+    advertiseAddress: "172.18.211.185"
+    bindPort: 6444
+
