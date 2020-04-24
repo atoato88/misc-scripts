@@ -30,3 +30,6 @@ bash -c 'readarray files < <(ls -1 | sed -e "s/curl/CURL/g"); for file in ${file
 # ping_with_time.sh 8a3ca32d1acea73fbfb1d344135aa975
 # run-test-prometheus-target.sh 46a46d45cd198fdc1a6259b22a5450ba
 
+bash -c 'readarray files < <(find . -type f); for file in ${files[@]}; do echo -n $(md5sum $file) $file| cut -d " " -f 1,3|awk "{print \$1 \" \" \$2 }"; done'
+
+bash -c 'readarray files < <(ls -1tr | tail -n10 | xargs -I {} find {} -name "url.txt"); for i in `seq 0 869` ; do echo ${files[i]} | sed -e "s/ /\ /g" | xargs -I {} md5sum {}; done'
