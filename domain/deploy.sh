@@ -13,3 +13,4 @@ sudo systemctl daemon-reload
 sudo systemctl enable update-domain.timer
 sudo systemctl start update-domain.timer
 
+echo "In advance, you have to set \"a * <current global ip>\" at DNS setting on value-domain page."
