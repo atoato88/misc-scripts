@@ -1,0 +1,9 @@
+[Unit]
+Description=cpulimit to gopls process
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/gopls-cpulimit.sh
+
+[Install]
+WantedBy=multi-user.target
