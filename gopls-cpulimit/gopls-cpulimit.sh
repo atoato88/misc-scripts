@@ -2,7 +2,7 @@
 
 while :
 do
-	list=$(ps -ef | grep gopls | awk '{print $8 "," $2}' | grep -e "^gopls")
+	list=$(ps -ef | grep gopls | awk '{print $8 "," $2}' | grep -e "gopls,")
 	#echo $list
 	for i in ${list}
 	do
