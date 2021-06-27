@@ -1,6 +1,5 @@
 # misc-scripts
 
-
 ```bash
 cd ~
 git clone <URL for this repo> scripts
